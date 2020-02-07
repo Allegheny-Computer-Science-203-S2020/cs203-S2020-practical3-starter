@@ -3,6 +3,27 @@
 from termfrequency import compute_tf_cookbook
 
 # TODO: Add your test cases from the previous practical assignment
+#
+# TODO: Calculate the coverage of your test suite
+#
+# TODO: Try to add test cases to increase the coverage of your test suite
+#
+# TODO: You should try to cover as many regions of the program as is possible
+#
+# Suggestions:
+# -- Study the test coverage report and see what:
+#   --> Lines
+#   --> Blocks of lines
+#   --> Branches
+# are currently not being covered by the tests.
+# Then, think about how you can create an input that will cause the tests
+# to cover those regions of functions in the compute_tf_cookbook program.
+#
+# -- As you attempt to increase coverage, think carefully about
+# how you can run the functions under test in a different way
+#
+# -- Don't forget that you cannot cover the lines in a function of the
+# compute_tf_cookbook if you do not have a test that calls that function!
 
 
 def test_read_file_populates_data_0():
