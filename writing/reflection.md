@@ -1,6 +1,6 @@
 # Reflection by Gregory M. Kapfhammer
 
-## Using a fenced code block, please display the output from running coverage testing
+## Using a fenced code block, please display the final output from running coverage testing
 
 Please provide a fenced code block.
 
