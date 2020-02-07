@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Make sure that you understand the purpose of this script
+
 # determine whether or not black code formatting
 # will fail if code is not correctly formatted
 # "--check" returns non-zero exit code if formatting needed
