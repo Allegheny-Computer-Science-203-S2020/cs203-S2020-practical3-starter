@@ -39,8 +39,7 @@ before_install:
   # - pyenv global 3.7.6
   # install all of the development dependencies for Python
   - pip install --upgrade pip
-  - pip install proselint
-  - pip install pipenv
+  - pip install --upgrade pipenv
   # do not allow Travis to use standard error for debugging purposes
   - unset _JAVA_OPTIONS
   # install dev dependencies with pipenv
