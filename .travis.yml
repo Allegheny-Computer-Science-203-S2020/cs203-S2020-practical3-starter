@@ -39,7 +39,11 @@ before_install:
   # - pyenv global 3.7.6
   # install all of the development dependencies for Python
   - pip install --upgrade pip
+  - pip --version
   - pip install --upgrade pipenv
+  - which python
+  - which pip
+  - which pipenv
   # do not allow Travis to use standard error for debugging purposes
   - unset _JAVA_OPTIONS
   # install dev dependencies with pipenv
