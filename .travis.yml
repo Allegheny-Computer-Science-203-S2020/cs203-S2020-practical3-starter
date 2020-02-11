@@ -1,14 +1,21 @@
 # use Java and non-root
-dist: trusty
+dist: xenial
 sudo: false
 language: Java
-jdk: oraclejdk8
+jdk: oraclejdk9
 
 # ignore the virtualenv that Travis creates
 env:
+  # run build and test on two multiple versions of Python
+  matrix:
+    - PYENV_VERSION=3.7.6
+    - PYENV_VERSION=3.6.9
   global:
+    - PYENV_ROOT=$HOME/.travis-pyenv
     - PIPENV_VENV_IN_PROJECT=1
     - PIPENV_IGNORE_VIRTUALENVS=1
+    - LANG=en_US.UTF-8
+    - LC_ALL=en_US.UTF-8
 
 # install the dependencies
 before_install:
@@ -21,16 +28,24 @@ before_install:
   - rm -rf gradle-4.6-bin.zip
   # add gradle bin to path at the beginning to ensure it overwrites old gradle
   - export PATH="$HOME/gradle-4.6/bin:$PATH"
-  # switch to Python 3.6.3 globally, install python dependencies
-  # Note that by default Travis CI does not currently support Python 3.7.3 through Pyenv
-  - pyenv global 3.6.3
+  # install pyenv using the installer, furnishing a managed version
+  # - unset PYENV_ROOT
+  # - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+  # - export PATH="$HOME/.pyenv/bin:$PATH"
+  # - pyenv install 3.7.6
+  - wget https://github.com/praekeltfoundation/travis-pyenv/releases/latest/download/setup-pyenv.sh
+  - source setup-pyenv.sh
+  # pick the version of Python that was installed through Pyenv
+  # - pyenv global 3.7.6
+  # install all of the development dependencies for Python
   - pip install --upgrade pip
   - pip install proselint
   - pip install pipenv
   # do not allow Travis to use standard error for debugging purposes
   - unset _JAVA_OPTIONS
   # install dev dependencies with pipenv
-  - pipenv install --dev --three
+  # - pipenv install --dev --three
+  - pipenv install --dev --skip-lock --python "$PYENV_VERSION"
 
 # cache to improve build speed
 before_cache:
@@ -38,6 +53,7 @@ before_cache:
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
+    - $HOME/.pyenv_cache
     - $HOME/.pip-cache/
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
