@@ -44,6 +44,7 @@ before_install:
   - which python
   - which pip
   - which pipenv
+  - echo $PATH
   # do not allow Travis to use standard error for debugging purposes
   - unset _JAVA_OPTIONS
   # install dev dependencies with pipenv
