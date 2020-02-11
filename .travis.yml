@@ -1,19 +1,28 @@
 # use Java and non-root
+# note that Python will be installed through
+# pyenv, ensuring that the build uses a version
+# of Python managed specifically for this project
 dist: xenial
 sudo: false
 language: Java
 jdk: oraclejdk9
 
-# ignore the virtualenv that Travis creates
+# configure the build environment
+# --> matrix is for the versions of Python
+# --> global is for the environment variables
 env:
-  # run build and test on two multiple versions of Python
+  # run build and test on multiple versions of Python,
+  # using a recent version of the 3.6 and 3.7 series
   matrix:
     - PYENV_VERSION=3.7.6
     - PYENV_VERSION=3.6.9
+  # ignore the virtualenv that Travis creates
+  # set the root for all Python commands using pyenv
+  # set language variables needed by pipenv
   global:
-    - PYENV_ROOT=$HOME/.travis-pyenv
     - PIPENV_VENV_IN_PROJECT=1
     - PIPENV_IGNORE_VIRTUALENVS=1
+    - PYENV_ROOT=$HOME/.travis-pyenv
     - LANG=en_US.UTF-8
     - LC_ALL=en_US.UTF-8
 
@@ -29,26 +38,21 @@ before_install:
   # add gradle bin to path at the beginning to ensure it overwrites old gradle
   - export PATH="$HOME/gradle-4.6/bin:$PATH"
   # install pyenv using the installer, furnishing a managed version
-  # - unset PYENV_ROOT
-  # - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-  # - export PATH="$HOME/.pyenv/bin:$PATH"
-  # - pyenv install 3.7.6
   - wget https://github.com/praekeltfoundation/travis-pyenv/releases/latest/download/setup-pyenv.sh
   - source setup-pyenv.sh
-  # pick the version of Python that was installed through Pyenv
-  # - pyenv global 3.7.6
   # install all of the development dependencies for Python
+  # echo the version numbers and paths to support debugging
   - pip install --upgrade pip
   - pip --version
-  - pip install --upgrade pipenv
-  - which python
   - which pip
+  - pip install --upgrade pipenv
+  - pipenv --version
   - which pipenv
-  - echo $PATH
   # do not allow Travis to use standard error for debugging purposes
   - unset _JAVA_OPTIONS
-  # install dev dependencies with pipenv
-  # - pipenv install --dev --three
+  # install all the dev dependencies with pipenv
+  # pick the version of Python that was installed through pyenv
+  # with corresponds to the value set by PYENV_VERSION
   - pipenv install --dev --skip-lock --python "$PYENV_VERSION"
 
 # cache to improve build speed
